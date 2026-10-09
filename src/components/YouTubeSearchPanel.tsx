@@ -1,5 +1,5 @@
 import React, { useState, useMemo } from 'react';
-import { Search, Play, Filter, Music2, CheckCircle2, Flame, Loader2, Compass, Sparkles } from 'lucide-react';
+import { Search, Play, Filter, Music2, CheckCircle2, Flame, Loader2, Compass } from 'lucide-react';
 import { VideoItem } from '../types';
 import { FEATURED_VIDEOS, POPULAR_SEARCH_SUGGESTIONS, liveSearchYouTube, parseInputOrQuery } from '../services/youtubeSearch';
 

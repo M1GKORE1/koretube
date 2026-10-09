@@ -5,11 +5,11 @@ import {
   Grid2X2,
   Share2,
   Check,
-  Sparkles,
   Play,
   Flame,
   Info,
   Radio,
+  CheckCircle2,
 } from 'lucide-react';
 import { VideoItem } from '../types';
 import { getEmbedUrl } from '../services/youtubeSearch';
@@ -149,7 +149,7 @@ export const YouTubePlayer: React.FC<YouTubePlayerProps> = ({
               <span>Categoria: {currentVideo.category || 'Musica & Intrattenimento'}</span>
               <span aria-hidden="true" className="text-slate-600">·</span>
               <span className="text-emerald-400 flex items-center gap-1">
-                <Sparkles className="w-3.5 h-3.5" /> Riproduzione ad alta definizione
+                <CheckCircle2 className="w-3.5 h-3.5" /> Riproduzione ad alta definizione
               </span>
             </div>
 
