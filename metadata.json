@@ -1,0 +1,6 @@
+{
+  "name": "VoiceSkip - Controllo Vocale YouTube",
+  "description": "Controlla la riproduzione e premi Salta con comandi vocali in vivavoce su YouTube, con simulatore, assistente vocale continuo e guida nativa per Android e iOS.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
