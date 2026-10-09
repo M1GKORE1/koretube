@@ -13,6 +13,9 @@ import {
   X,
   Check,
   LayoutGrid,
+  Radio,
+  Sliders,
+  Tv,
 } from 'lucide-react';
 import { VideoItem } from '../types';
 import { FEATURED_VIDEOS, getEmbedUrl, liveSearchYouTube, parseInputOrQuery } from '../services/youtubeSearch';
@@ -93,97 +96,115 @@ export const MultiViewPlayer: React.FC<MultiViewPlayerProps> = ({
   };
 
   return (
-    <div ref={containerRef} className="space-y-4 bg-slate-950 p-2 sm:p-4 rounded-2xl">
-      {/* Multiview Top Bar: Layout Selector & Audio Routing */}
-      <div className="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-wrap items-center justify-between gap-4 shadow-xl">
+    <div ref={containerRef} className="space-y-5 bg-[#090b0e] p-3 sm:p-5 rounded-3xl border border-slate-800/80 shadow-2xl">
+      {/* Multiview Studio Control Bar */}
+      <div className="bg-slate-900/95 backdrop-blur border border-slate-800 rounded-2xl p-4 flex flex-wrap items-center justify-between gap-4 shadow-xl">
         {/* Left: Layout switcher buttons */}
-        <div className="flex items-center gap-2">
-          <span className="text-xs font-semibold text-slate-400 mr-1 flex items-center gap-1.5">
-            <LayoutGrid className="w-4 h-4 text-red-500" />
-            <span>Schermi:</span>
-          </span>
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
+            <div className="w-8 h-8 rounded-lg bg-red-600/20 border border-red-500/30 flex items-center justify-center text-red-500">
+              <LayoutGrid className="w-4 h-4" />
+            </div>
+            <div>
+              <span className="text-xs font-bold text-white tracking-wide uppercase block">
+                Regia Multiview
+              </span>
+              <span className="text-[11px] text-slate-400">Schermi simultanei</span>
+            </div>
+          </div>
 
           <div className="flex items-center gap-1 bg-slate-950 p-1 rounded-xl border border-slate-800">
             <button
               onClick={() => setLayoutCount(1)}
-              className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                 layoutCount === 1
-                  ? 'bg-red-600 text-white shadow-sm'
+                  ? 'bg-red-600 text-white shadow-md shadow-red-600/30'
                   : 'text-slate-400 hover:text-slate-200'
               }`}
               title="1 Schermo singolo"
             >
               <Square className="w-3.5 h-3.5" />
-              <span>1</span>
+              <span>Singolo</span>
             </button>
 
             <button
               onClick={() => setLayoutCount(2)}
-              className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                 layoutCount === 2
-                  ? 'bg-red-600 text-white shadow-sm'
+                  ? 'bg-red-600 text-white shadow-md shadow-red-600/30'
                   : 'text-slate-400 hover:text-slate-200'
               }`}
               title="2 Schermi affiancati"
             >
               <Columns2 className="w-3.5 h-3.5" />
-              <span>2</span>
+              <span>2 Video</span>
             </button>
 
             <button
               onClick={() => setLayoutCount(3)}
-              className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all ${
                 layoutCount === 3
-                  ? 'bg-red-600 text-white shadow-sm'
+                  ? 'bg-red-600 text-white shadow-md shadow-red-600/30'
                   : 'text-slate-400 hover:text-slate-200'
               }`}
               title="3 Schermi"
             >
-              <span className="text-xs font-bold px-0.5">3</span>
-              <span>Schermi</span>
+              <span className="font-mono text-xs font-bold">3</span>
+              <span>3 Video</span>
             </button>
 
             <button
               onClick={() => setLayoutCount(4)}
-              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-semibold transition-all ${
+              className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all ${
                 layoutCount === 4
-                  ? 'bg-red-600 text-white shadow-sm'
+                  ? 'bg-red-600 text-white shadow-md shadow-red-600/30'
                   : 'text-slate-400 hover:text-slate-200'
               }`}
               title="4 Schermi (Griglia 2x2)"
             >
-              <Grid2X2 className="w-3.5 h-3.5" />
-              <span>4 (2x2)</span>
+              <Grid2X2 className="w-4 h-4" />
+              <span>4 Video (2x2)</span>
             </button>
           </div>
         </div>
 
         {/* Right: Audio Router & Fullscreen */}
-        <div className="flex items-center gap-2">
-          <div className="hidden md:flex items-center gap-1 bg-slate-950 p-1 rounded-xl border border-slate-800 text-xs">
-            <span className="text-slate-500 px-2 flex items-center gap-1">
-              <Volume2 className="w-3.5 h-3.5 text-slate-400" />
-              Audio:
+        <div className="flex items-center gap-3">
+          {/* Audio selector buttons */}
+          <div className="flex items-center gap-1 bg-slate-950 p-1 rounded-xl border border-slate-800 text-xs">
+            <span className="text-slate-400 px-2 flex items-center gap-1 text-[11px] font-semibold">
+              <Volume2 className="w-3.5 h-3.5 text-emerald-400" />
+              Audio Focus:
             </span>
-            {[0, 1, 2, 3].slice(0, layoutCount).map((idx) => (
-              <button
-                key={idx}
-                onClick={() => setActiveAudioSlot(activeAudioSlot === idx ? null : idx)}
-                className={`px-2 py-1 rounded-md text-[11px] font-mono font-semibold transition-colors ${
-                  activeAudioSlot === idx
-                    ? 'bg-emerald-600 text-white shadow-sm'
-                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'
-                }`}
-                title={`Ascolta audio dello Schermo ${idx + 1}`}
-              >
-                #{idx + 1}
-              </button>
-            ))}
+            {[0, 1, 2, 3].slice(0, layoutCount).map((idx) => {
+              const isSelected = activeAudioSlot === idx;
+              return (
+                <button
+                  key={idx}
+                  onClick={() => setActiveAudioSlot(isSelected ? null : idx)}
+                  className={`px-2.5 py-1 rounded-lg text-xs font-mono font-bold transition-all flex items-center gap-1 ${
+                    isSelected
+                      ? 'bg-emerald-600 text-white shadow-sm shadow-emerald-600/30 ring-1 ring-emerald-400/40'
+                      : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800'
+                  }`}
+                  title={`Ascolta audio dello Schermo ${idx + 1}`}
+                >
+                  <span>#{idx + 1}</span>
+                  {isSelected && (
+                    <span className="flex items-end gap-0.5 h-3">
+                      <span className="w-0.5 h-1.5 bg-white rounded-full animate-bounce" />
+                      <span className="w-0.5 h-3 bg-white rounded-full animate-bounce [animation-delay:0.15s]" />
+                      <span className="w-0.5 h-2 bg-white rounded-full animate-bounce [animation-delay:0.3s]" />
+                    </span>
+                  )}
+                </button>
+              );
+            })}
           </div>
 
           <button
             onClick={handleToggleFullscreen}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium border border-slate-700 transition-colors"
+            className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white text-xs font-semibold border border-slate-700/80 transition-all active:scale-95 cursor-pointer shadow-sm"
             title="Schermo Intero Griglia"
           >
             <Maximize2 className="w-3.5 h-3.5" />
@@ -192,9 +213,9 @@ export const MultiViewPlayer: React.FC<MultiViewPlayerProps> = ({
         </div>
       </div>
 
-      {/* Multiview Grid Layout Container */}
+      {/* Multiview Grid Layout */}
       <div
-        className={`grid gap-3 transition-all ${
+        className={`grid gap-4 transition-all ${
           layoutCount === 1
             ? 'grid-cols-1'
             : layoutCount === 2
@@ -206,7 +227,6 @@ export const MultiViewPlayer: React.FC<MultiViewPlayerProps> = ({
       >
         {slots.slice(0, layoutCount).map((video, index) => {
           const isAudioActive = activeAudioSlot === index;
-          // Build embed URL: mute if audio is not focused on this slot
           const baseEmbed = getEmbedUrl(video);
           const hasMuteParam = baseEmbed.includes('mute=');
           const embedUrl = hasMuteParam
@@ -216,42 +236,44 @@ export const MultiViewPlayer: React.FC<MultiViewPlayerProps> = ({
           return (
             <div
               key={index}
-              className={`bg-slate-900 border rounded-2xl overflow-hidden shadow-xl flex flex-col transition-all ${
-                isAudioActive ? 'border-emerald-500/80 ring-1 ring-emerald-500/30' : 'border-slate-800'
+              className={`bg-slate-900 border rounded-2xl overflow-hidden shadow-2xl flex flex-col transition-all duration-200 ${
+                isAudioActive
+                  ? 'border-emerald-500 shadow-emerald-950/30 ring-2 ring-emerald-500/20'
+                  : 'border-slate-800/80 hover:border-slate-700'
               }`}
             >
               {/* Screen Slot Header */}
-              <div className="px-3.5 py-2.5 bg-slate-950/80 border-b border-slate-800 flex items-center justify-between gap-2 text-xs">
-                <div className="flex items-center gap-2 min-w-0">
-                  <span className="px-1.5 py-0.5 rounded bg-red-600/20 text-red-400 font-bold font-mono text-[11px] shrink-0 border border-red-500/30">
-                    #{index + 1}
+              <div className="px-4 py-3 bg-slate-950 border-b border-slate-800/80 flex items-center justify-between gap-3 text-xs">
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <span className="w-6 h-6 rounded-lg bg-red-600/20 text-red-400 font-bold font-mono text-xs flex items-center justify-center shrink-0 border border-red-500/30">
+                    {index + 1}
                   </span>
-                  <p className="font-semibold text-slate-200 truncate text-[11px] sm:text-xs" title={video.title}>
+                  <p className="font-semibold text-slate-100 truncate text-xs" title={video.title}>
                     {video.title}
                   </p>
                 </div>
 
                 {/* Slot Actions */}
-                <div className="flex items-center gap-1.5 shrink-0">
+                <div className="flex items-center gap-2 shrink-0">
                   {/* Audio Mute/Unmute toggle for this slot */}
                   <button
                     onClick={() => setActiveAudioSlot(isAudioActive ? null : index)}
-                    className={`p-1.5 rounded-lg text-xs transition-colors flex items-center gap-1 ${
+                    className={`px-2.5 py-1.5 rounded-lg text-xs transition-all flex items-center gap-1.5 ${
                       isAudioActive
-                        ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-semibold'
+                        ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-semibold shadow-sm'
                         : 'bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-slate-200'
                     }`}
-                    title={isAudioActive ? 'Audio attivo (clicca per disattivare)' : 'Attiva audio per questo schermo'}
+                    title={isAudioActive ? 'Audio attivo su questo schermo' : 'Attiva audio per questo schermo'}
                   >
                     {isAudioActive ? (
                       <>
                         <Volume2 className="w-3.5 h-3.5 text-emerald-400 animate-pulse" />
-                        <span className="hidden sm:inline text-[10px]">Audio Attivo</span>
+                        <span className="text-[11px] font-bold">Audio ON</span>
                       </>
                     ) : (
                       <>
                         <VolumeX className="w-3.5 h-3.5" />
-                        <span className="hidden sm:inline text-[10px]">Muto</span>
+                        <span className="text-[11px]">Muto</span>
                       </>
                     )}
                   </button>
@@ -259,7 +281,7 @@ export const MultiViewPlayer: React.FC<MultiViewPlayerProps> = ({
                   {/* Change video button */}
                   <button
                     onClick={() => openSearchForSlot(index)}
-                    className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white transition-colors text-[11px] border border-slate-700"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white transition-all text-xs font-medium border border-slate-700 active:scale-95"
                     title="Cambia video per questo schermo"
                   >
                     <Search className="w-3 h-3 text-red-400" />
@@ -281,16 +303,16 @@ export const MultiViewPlayer: React.FC<MultiViewPlayerProps> = ({
               </div>
 
               {/* Bottom Slot Info Bar */}
-              <div className="px-3 py-2 bg-slate-950/40 flex items-center justify-between text-[11px] text-slate-400">
-                <span className="truncate">{video.channel}</span>
+              <div className="px-4 py-2.5 bg-slate-950/60 border-t border-slate-800/40 flex items-center justify-between text-xs text-slate-400">
+                <span className="truncate font-medium text-slate-300">{video.channel}</span>
                 <a
                   href={`https://www.youtube.com/watch?v=${video.youtubeId}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hover:text-white flex items-center gap-1 text-[10px] shrink-0"
+                  className="hover:text-red-400 flex items-center gap-1 text-[11px] font-medium transition-colors"
                 >
-                  <span>Apri</span>
-                  <ExternalLink className="w-2.5 h-2.5" />
+                  <span>Apri su YouTube</span>
+                  <ExternalLink className="w-3 h-3" />
                 </a>
               </div>
             </div>
@@ -300,22 +322,25 @@ export const MultiViewPlayer: React.FC<MultiViewPlayerProps> = ({
 
       {/* Modal: Change Video for Specific Slot */}
       {targetSlotForSearch !== null && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-slate-900 border border-slate-800 rounded-2xl w-full max-w-2xl max-h-[85vh] flex flex-col shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
+          <div className="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-2xl max-h-[85vh] flex flex-col shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-200">
             {/* Modal Header */}
-            <div className="p-4 border-b border-slate-800 bg-slate-950/80 flex items-center justify-between">
+            <div className="p-5 border-b border-slate-800 bg-slate-950 flex items-center justify-between">
               <div>
-                <h3 className="text-sm font-bold text-white flex items-center gap-2">
+                <h3 className="text-base font-bold text-white flex items-center gap-2">
+                  <span className="w-6 h-6 rounded-md bg-red-600 text-white font-mono text-xs flex items-center justify-center">
+                    {targetSlotForSearch + 1}
+                  </span>
                   <span>Scegli Video per lo Schermo #{targetSlotForSearch + 1}</span>
                 </h3>
-                <p className="text-xs text-slate-400">
-                  Cerca qualsiasi titolo su YouTube o incolla un link/ID video
+                <p className="text-xs text-slate-400 mt-0.5">
+                  Cerca qualsiasi titolo su YouTube o incolla un link/ID
                 </p>
               </div>
 
               <button
                 onClick={() => setTargetSlotForSearch(null)}
-                className="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white"
+                className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white transition-colors"
               >
                 <X className="w-4 h-4" />
               </button>
@@ -325,20 +350,20 @@ export const MultiViewPlayer: React.FC<MultiViewPlayerProps> = ({
             <div className="p-4 border-b border-slate-800 bg-slate-900">
               <form onSubmit={handleModalSearch} className="flex items-center gap-2">
                 <div className="relative flex-1">
-                  <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                  <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
                   <input
                     type="text"
                     value={searchModalQuery}
                     onChange={(e) => setSearchModalQuery(e.target.value)}
-                    placeholder="Cerca su YouTube (es. 'Coldplay', 'Vasco', 'Lo-Fi', 'Gaming')..."
-                    className="w-full pl-9 pr-4 py-2 rounded-xl bg-slate-950 border border-slate-700 text-xs text-slate-100 placeholder-slate-500 focus:outline-none focus:border-red-500"
+                    placeholder="Cerca su YouTube (es. 'Coldplay', 'Vasco', 'Lo-Fi', 'Podcast')..."
+                    className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-slate-950 border border-slate-700 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-red-500 transition-colors"
                     autoFocus
                   />
                 </div>
                 <button
                   type="submit"
                   disabled={isSearchingModal}
-                  className="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-500 disabled:opacity-50 text-white font-semibold text-xs transition-colors shrink-0"
+                  className="px-5 py-2.5 rounded-xl bg-red-600 hover:bg-red-500 disabled:opacity-50 text-white font-semibold text-xs transition-colors shrink-0 shadow-md shadow-red-600/30"
                 >
                   {isSearchingModal ? 'Ricerca...' : 'Cerca'}
                 </button>
@@ -346,33 +371,33 @@ export const MultiViewPlayer: React.FC<MultiViewPlayerProps> = ({
             </div>
 
             {/* Modal Results & Featured Picks */}
-            <div className="p-4 overflow-y-auto space-y-3 flex-1">
-              <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
-                {modalSearchResults.length > 0 ? 'Risultati di Ricerca:' : 'Brani e Video Suggeriti:'}
+            <div className="p-5 overflow-y-auto space-y-3 flex-1">
+              <div className="text-xs font-bold text-slate-400 uppercase tracking-wider">
+                {modalSearchResults.length > 0 ? 'Risultati di Ricerca YouTube:' : 'Brani & Video Consigliati:'}
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {(modalSearchResults.length > 0 ? modalSearchResults : FEATURED_VIDEOS).map((item) => (
                   <button
                     key={item.id}
                     onClick={() => handleSelectVideoForSlot(item, targetSlotForSearch)}
-                    className="flex items-center gap-3 p-2.5 rounded-xl bg-slate-950/60 hover:bg-slate-800/80 border border-slate-800 hover:border-slate-700 text-left transition-all group"
+                    className="flex items-center gap-3 p-2.5 rounded-2xl bg-slate-950/70 hover:bg-slate-800/90 border border-slate-800 hover:border-red-500/50 text-left transition-all group cursor-pointer shadow-sm"
                   >
                     <img
                       src={item.thumbnail}
                       alt={item.title}
-                      className="w-16 h-11 object-cover rounded-lg shrink-0 bg-slate-900"
+                      className="w-16 h-12 object-cover rounded-xl shrink-0 bg-slate-900 group-hover:scale-105 transition-transform"
                       loading="lazy"
                     />
                     <div className="min-w-0 flex-1">
-                      <p className="text-xs font-semibold text-slate-200 truncate group-hover:text-red-400">
+                      <p className="text-xs font-semibold text-slate-100 truncate group-hover:text-red-400 transition-colors">
                         {item.title}
                       </p>
                       <p className="text-[11px] text-slate-400 truncate mt-0.5">
                         {item.channel}
                       </p>
                     </div>
-                    <span className="shrink-0 px-2 py-1 rounded bg-red-600/20 text-red-400 text-[10px] font-bold group-hover:bg-red-600 group-hover:text-white transition-colors">
+                    <span className="shrink-0 px-2.5 py-1.5 rounded-xl bg-red-600/20 text-red-400 font-bold text-[11px] group-hover:bg-red-600 group-hover:text-white transition-colors">
                       Imposta
                     </span>
                   </button>
